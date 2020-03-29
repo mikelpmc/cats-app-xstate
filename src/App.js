@@ -1,26 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { createContext, useState } from 'react';
+import { useMachine } from '@xstate/react';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import { createCategoriesMachine } from './Categories/machine/categoriesMachine';
+import { getCategories } from './Categories/service/getCategories';
+import { Categories } from './Categories/ui/categories';
+import { Cats } from './Cats/ui';
+import './styles.css';
+
+export const Context = createContext();
+const categoriesMachine = createCategoriesMachine(getCategories);
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    const [current, send] = useMachine(categoriesMachine);
+    const { selectedCategory } = current.context;
+
+    return (
+        <Context.Provider
+            value={{
+                store: {
+                    categoriesMachine: { current, send }
+                }
+            }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+            <div>
+                <h1>Cats gifs&images</h1>
+                <h2>Made with ❤️ by Catittude, asix94 and lynott</h2>
+
+                <Switch>
+                    <Route exact path="/">
+                        <Categories />
+                    </Route>
+                    <Route exact path="/category/:id">
+                        {selectedCategory ? <Cats /> : <Redirect to="/" />}
+                    </Route>
+                    <Route>
+                        <p>Not found</p>
+                    </Route>
+                </Switch>
+            </div>
+        </Context.Provider>
+    );
 }
 
 export default App;

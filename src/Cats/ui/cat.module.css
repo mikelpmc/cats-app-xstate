@@ -1,0 +1,13 @@
+.cat__item {
+    border: 2px solid tomato;
+    margin: 5px;
+    box-shadow: 2px 2px #888888;
+    background-color: white;
+}
+
+.cat__item__image {
+    display: flex;
+    margin: auto;
+    width: 250px;
+    height: 200px;
+}

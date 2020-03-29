@@ -1,0 +1,22 @@
+.cats__container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.cats__button {
+    font-size: 16px;
+    text-transform: capitalize;
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 0.5rem 0;
+    margin: 0.5rem 1rem;
+    width: 11rem;
+    background: transparent;
+    color: black;
+    border: 2px solid tomato;
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    margin-bottom: 10px;
+}

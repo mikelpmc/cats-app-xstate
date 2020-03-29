@@ -1,0 +1,26 @@
+.category__item {
+    border: 2px solid tomato;
+    margin: 5px;
+    box-shadow: 2px 2px #888888;
+    background-color: white;
+}
+
+.category__item__image {
+    display: flex;
+    margin: auto;
+    width: 250px;
+    height: 200px;
+}
+
+.category__item__button {
+    font-size: 16px;
+    text-transform: capitalize;
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 0.5rem 0;
+    margin: 0.5rem 1rem;
+    width: 11rem;
+    background: transparent;
+    color: black;
+    border: 2px solid tomato;
+}
