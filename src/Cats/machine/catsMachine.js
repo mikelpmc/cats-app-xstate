@@ -8,11 +8,6 @@ export const STATES = {
     FAILURE: 'failure'
 };
 
-export const EVENTS = {
-    FETCH: 'fetch',
-    RETRY: 'retry'
-};
-
 const createCatsMachine = categoryId =>
     Machine({
         id: 'catsMachine',
@@ -24,7 +19,7 @@ const createCatsMachine = categoryId =>
         states: {
             [STATES.IDLE]: {
                 on: {
-                    [EVENTS.FETCH]: { target: STATES.LOADING }
+                    '': { target: STATES.LOADING }
                 }
             },
             [STATES.LOADING]: {
