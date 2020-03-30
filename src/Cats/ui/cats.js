@@ -13,14 +13,10 @@ const Cats = () => {
         store: { categoriesMachine }
     } = useContext(Context);
 
-    const [current, send] = useService(
+    const [current] = useService(
         categoriesMachine.current.context.selectedCategory
     );
     const { cats } = current.context;
-
-    useEffect(() => {
-        send(EVENTS.FETCH);
-    }, []);
 
     const handleGoHome = e => {
         e.preventDefault();

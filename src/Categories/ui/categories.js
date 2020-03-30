@@ -12,7 +12,7 @@ export const Categories = () => {
         }
     } = useContext(Context);
 
-    const { categories, selectedCategory, error } = current.context;
+    const { categories, selectedCategory, error, retries } = current.context;
 
     const isIdle = current.matches(STATES.IDLE);
     const isSelectedCategory = current.matches(STATES.CATEGORY_SELECTED);
@@ -36,8 +36,10 @@ export const Categories = () => {
                 <div>
                     <p>{error}</p>
                     <button type="button" onClick={handleRetry}>
-                        Error! Try again
+                        Try again
                     </button>
+                    <p>Retries: {retries}</p>
+                    {retries >= 5 && <p>Max retries reached!</p>}
                 </div>
             )}
             {current.matches(STATES.SUCCESS) && (
