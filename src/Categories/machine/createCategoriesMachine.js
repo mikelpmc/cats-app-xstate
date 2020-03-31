@@ -1,34 +1,21 @@
 import { Machine, assign, spawn } from 'xstate';
-import { createCatsMachine } from '../../Cats/machine/catsMachine';
+import { catsMachine } from '../../Cats/machine';
+import STATES from './states';
+import EVENTS from './events';
 
-export const STATES = {
-  IDLE: 'idle',
-  LOADING: 'loading',
-  SUCCESS: 'success',
-  FAILURE: 'failure',
-  CATEGORY_SELECTED: 'category_selected'
-};
-
-export const EVENTS = {
-  FETCH: 'fetch',
-  RETRY: 'retry',
-  SELECT_CATEGORY: 'select_category',
-  CLEAR_SELECTED_CATEGORY: 'clear_selected_category'
-};
-
-const canFetch = (context, event) => {
+const canFetch = context => {
   return context.retries < 5;
 };
 
-export const createCategoriesMachine = getCategories =>
+const createCategoriesMachine = getCategories =>
   Machine({
-    id: 'categories',
+    id: 'categoriesMachine',
     initial: 'idle',
     context: {
       categories: [],
+      selectedCategory: null,
       error: null,
-      retries: 0,
-      selectedCategory: null
+      retries: 0
     },
     states: {
       [STATES.IDLE]: {
@@ -38,8 +25,8 @@ export const createCategoriesMachine = getCategories =>
       },
       [STATES.LOADING]: {
         invoke: {
-          id: 'categories',
-          src: getCategories.execute,
+          id: 'fetchCategories',
+          src: getCategories,
           onDone: {
             target: STATES.SUCCESS,
             actions: assign({
@@ -64,7 +51,7 @@ export const createCategoriesMachine = getCategories =>
           [EVENTS.SELECT_CATEGORY]: {
             target: STATES.CATEGORY_SELECTED,
             actions: assign((context, event) => {
-              const catMachine = spawn(createCatsMachine(event.id));
+              const catMachine = spawn(catsMachine(event.id));
 
               return { selectedCategory: catMachine };
             })
@@ -94,3 +81,5 @@ export const createCategoriesMachine = getCategories =>
       }
     }
   });
+
+export default createCategoriesMachine;

@@ -1,14 +1,7 @@
 import { Machine, assign } from 'xstate';
-import { getCats } from '../service/getCats';
+import STATES from './states';
 
-export const STATES = {
-  IDLE: 'idle',
-  LOADING: 'loading',
-  SUCCESS: 'success',
-  FAILURE: 'failure'
-};
-
-const createCatsMachine = categoryId =>
+const createCatsMachine = getCats => categoryId =>
   Machine({
     id: 'catsMachine',
     initial: STATES.IDLE,
@@ -24,7 +17,7 @@ const createCatsMachine = categoryId =>
       },
       [STATES.LOADING]: {
         invoke: {
-          id: 'cats',
+          id: 'fetchCats',
           src: (context, _) => getCats(context.categoryId),
           onDone: {
             target: STATES.SUCCESS,
@@ -50,4 +43,4 @@ const createCatsMachine = categoryId =>
     }
   });
 
-export { createCatsMachine };
+export default createCatsMachine;
