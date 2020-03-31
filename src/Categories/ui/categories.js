@@ -1,11 +1,11 @@
 import React, { useEffect, useContext } from 'react';
 import { Redirect } from 'react-router-dom';
-import { EVENTS, STATES } from '../machine/categoriesMachine';
-import { Category } from '../../Category/ui';
-import styles from './style.module.css';
+import { CATEGORIES_STATES, CATEGORIES_EVENTS } from '../machine/';
 import { Context } from '../../App';
+import Category from './category';
+import styles from './styles/categories.module.css';
 
-export const Categories = () => {
+const Categories = () => {
   const {
     store: {
       categoriesMachine: { current, send }
@@ -14,25 +14,22 @@ export const Categories = () => {
 
   const { categories, selectedCategory, error, retries } = current.context;
 
-  const isIdle = current.matches(STATES.IDLE);
-  const isSelectedCategory = current.matches(STATES.CATEGORY_SELECTED);
-
   useEffect(() => {
-    send(EVENTS.FETCH);
-  }, [isIdle]);
+    send(CATEGORIES_EVENTS.FETCH);
+  }, []);
 
   const handleRetry = event => {
-    send(EVENTS.RETRY);
+    send(CATEGORIES_EVENTS.RETRY);
   };
 
   const handleSelectCategory = id => {
-    send(EVENTS.SELECT_CATEGORY, { id });
+    send(CATEGORIES_EVENTS.SELECT_CATEGORY, { id });
   };
 
   return (
-    <main>
-      {current.matches(STATES.LOADING) && <p>Loading categories...</p>}
-      {current.matches(STATES.FAILURE) && (
+    <div>
+      {current.matches(CATEGORIES_STATES.LOADING) && <p>Loading categories...</p>}
+      {current.matches(CATEGORIES_STATES.FAILURE) && (
         <div>
           <p>{error}</p>
           <button type="button" onClick={handleRetry}>
@@ -42,15 +39,18 @@ export const Categories = () => {
           {retries >= 5 && <p>Max retries reached!</p>}
         </div>
       )}
-      {current.matches(STATES.SUCCESS) && (
+      {current.matches(CATEGORIES_STATES.SUCCESS) && (
         <div className={styles.categories__container}>
           {categories.map(({ id, name, image }) => (
             <Category id={id} name={name} image={image} onSelectCategory={handleSelectCategory} />
           ))}
         </div>
       )}
-
-      {isSelectedCategory && <Redirect to={`category/${selectedCategory.machine.context.categoryId}`} />}
-    </main>
+      {current.matches(CATEGORIES_STATES.CATEGORY_SELECTED) && (
+        <Redirect to={`category/${selectedCategory.machine.context.categoryId}`} />
+      )}
+    </div>
   );
 };
+
+export default Categories;
