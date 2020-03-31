@@ -1,19 +1,19 @@
-import { Machine, assign, spawn } from "xstate";
-import { createCatsMachine } from "../../Cats/machine/catsMachine";
+import { Machine, assign, spawn } from 'xstate';
+import { createCatsMachine } from '../../Cats/machine/catsMachine';
 
 export const STATES = {
-  IDLE: "idle",
-  LOADING: "loading",
-  SUCCESS: "success",
-  FAILURE: "failure",
-  CATEGORY_SELECTED: "category_selected"
+  IDLE: 'idle',
+  LOADING: 'loading',
+  SUCCESS: 'success',
+  FAILURE: 'failure',
+  CATEGORY_SELECTED: 'category_selected'
 };
 
 export const EVENTS = {
-  FETCH: "fetch",
-  RETRY: "retry",
-  SELECT_CATEGORY: "select_category",
-  CLEAR_SELECTED_CATEGORY: "clear_selected_category"
+  FETCH: 'fetch',
+  RETRY: 'retry',
+  SELECT_CATEGORY: 'select_category',
+  CLEAR_SELECTED_CATEGORY: 'clear_selected_category'
 };
 
 const canFetch = (context, event) => {
@@ -22,8 +22,8 @@ const canFetch = (context, event) => {
 
 export const createCategoriesMachine = getCategories =>
   Machine({
-    id: "categories",
-    initial: "idle",
+    id: 'categories',
+    initial: 'idle',
     context: {
       categories: [],
       error: null,
@@ -38,7 +38,7 @@ export const createCategoriesMachine = getCategories =>
       },
       [STATES.LOADING]: {
         invoke: {
-          id: "categories",
+          id: 'categories',
           src: getCategories.execute,
           onDone: {
             target: STATES.SUCCESS,
