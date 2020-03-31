@@ -1,14 +1,12 @@
 import React, { createContext } from 'react';
 import { useMachine } from '@xstate/react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import { createCategoriesMachine } from './Categories/machine/categoriesMachine';
-import { getCategories } from './Categories/service/getCategories';
-import { Categories } from './Categories/ui/categories';
+import { categoriesMachine } from './Categories/machine';
+import { Categories } from './Categories/ui';
 import { Cats } from './Cats/ui';
 import './styles.css';
 
 export const Context = createContext();
-const categoriesMachine = createCategoriesMachine(getCategories);
 
 function App() {
   const [current, send] = useMachine(categoriesMachine);
@@ -22,14 +20,14 @@ function App() {
         }
       }}
     >
-      <div>
+      <main>
         <h1>Cats gifs&images</h1>
         <h2>
           Made with{' '}
-          <span role="img" aria-label="Snowman">
+          <span role="img" aria-label="heart">
             ❤️
           </span>{' '}
-          by Catittude, asix94 and lynott
+          by Catittude, Asix94 and Lynott
         </h2>
 
         <Switch>
@@ -43,7 +41,7 @@ function App() {
             <p>Route Not found</p>
           </Route>
         </Switch>
-      </div>
+      </main>
     </Context.Provider>
   );
 }

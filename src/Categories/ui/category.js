@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './styles.module.css';
+import styles from './styles/category.module.css';
 
 const Category = ({ id, name, image, onSelectCategory }) => {
   const handleSelectCategory = id => {

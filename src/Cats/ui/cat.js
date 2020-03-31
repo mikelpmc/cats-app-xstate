@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './cat.module.css';
+import styles from './styles/cat.module.css';
 
 const Cat = ({ id, image }) => {
   return (
